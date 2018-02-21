@@ -1,0 +1,54 @@
+body {
+    font-family: "Verdana", "Arial";
+}
+
+.searchItem {
+    background-color: #ffffff;
+    padding-top: 30px;
+    padding-left: 5px;
+    padding-right: 5px;
+    min-height: 250px;
+    border: 1px solid #d3d3d3;
+}
+
+.beerFilter, .searchInput {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d3d3d3;
+    border-radius: 4px;
+}
+
+.beerFilterForm {
+    margin: 10px 0;
+}
+
+.randomButton {
+    float:right;
+}
+
+.beerStats {
+    background-color: #f5f5f5;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px;
+    border-radius: 4px;
+}
+
+.searchHeader {
+    margin-top: 0px;
+}
+
+.searchButton {
+    margin-top: 10px;
+}
+
+.searchResults, .beerResults {
+    height: 60%;
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.searchContainer, .beerViewer {
+    overflow-y: hidden;
+}

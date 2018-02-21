@@ -1,0 +1,101 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand">BreweryDB</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-4 sidebar searchContainer">
+
+            <h1 class="page-header searchHeader">Search</h1>
+
+                <form class="form-group">
+                    <input type="text" class="searchInput" ng-model="searchQuery" placeholder="Search...">
+                    <button type="submit" class="btn btn-warning searchButton" ng-click="searchBeers()">Search Beers</button>
+                    <button type="submit" class="btn btn-warning searchButton" ng-click="searchBreweries()">Search Breweries</button>
+                    <a ng-show="clearButton" ng-click="clearSearch()" class="clearButton">Clear Search</a>
+                </form>
+
+            <h2 class="sub-header">Results</h2>
+            <form class="beerFilterForm">
+                <input type="text" class="beerFilter" ng-model="query" placeholder="Filter these results...">
+            </form>
+
+            <p ng-show="failedQuery">Sorry, no search results for "{{ failedQuery }}"</p>
+
+            <div ng-show="beers.length > 0" class="row placeholders searchResults">
+                <div class="col-xs-6 col-sm-3 col-md-6 placeholder" ng-repeat="beer in beers | filter: query |orderBy: name">
+                    <div class="searchItem" ng-click="showDetails($index)">
+                        <img ng-show="beer.labels.icon" ng-src="{{ beer.labels.icon}}" class="img-responsive" alt="Generic placeholder thumbnail">
+                        <img ng-show="!beer.labels.icon" ng-src="http://placehold.it/64x64" class="img-responsive" alt="Generic placeholder thumbnail">
+                        <h4>{{ beer.name }}</h4>
+                        <span class="text-muted">{{ beer.description | limitTo: 50 }}</span>
+                        <span ng-if="beer.description.length > 50">...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="breweries.length > 0" class="row placeholders searchResults">
+                <div class="col-xs-12 col-sm-12 col-md-12 placeholder" ng-repeat="brewery in breweries | filter: query |orderBy: name">
+                    <div class="searchItem">
+                        <img ng-show="brewery.images.icon" ng-src="{{ brewery.images.icon}}" class="img-responsive" alt="Generic placeholder thumbnail">
+                        <img ng-show="!brewery.images.icon" ng-src="http://placehold.it/64x64" class="img-responsive" alt="Generic placeholder thumbnail">
+                        <h4>{{ brewery.name }}</h4>
+                        <p ng-show="brewery.established" class="text-muted">Established in: {{ brewery.established }}</p>
+                        <p ng-show="brewery.website" class="text-muted">Website: <a href="{{ brewery.website }}">{{ brewery.website }}</a></p>
+                        <button type="button" class="btn btn-warning" ng-click="searchBreweryBeers(brewery.name)">Search beers from this brewery</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-8 col-md-offset-4 main .beerViewer">
+            <div class="page-header">
+                <button type="button" class="btn btn-warning randomButton" ng-click="getRandomBeer()">Show me a random beer</button>
+                <h1>Beer Viewer</h1>
+            </div>
+
+            <div class="row placeholders">
+                <div class="col-xs-12 col-sm-4 placeholder">
+                    <img ng-show="detailBeer.labels.medium" ng-src="{{ detailBeer.labels.medium}}" class="img-responsive" alt="Generic placeholder thumbnail">
+                    <img ng-show="!detailBeer.labels.medium" ng-src="http://placehold.it/256x256" class="img-responsive" alt="Generic placeholder thumbnail">
+                </div>
+                <div class="col-xs-12 col-sm-4 placeholder">
+                    <h4>{{ detailBeer.name }}</h4>
+                    <span class="text-muted">{{ detailBeer.description }}</span>
+                    <span class="text-muted" ng-show="!detailBeer.description">Sorry! There is no description for this beer.</span>
+                </div>
+                <div class="col-xs-12 col-sm-4 placeholder">
+                    <div class="beerStats">
+                        <p ng-show="detailBeer.isOrganic === 'N'"><span  class="glyphicon glyphicon-grain" aria-hidden="true"></span> Organic</p>
+                        <p ng-show="detailBeer.abv != null"><span class="glyphicon glyphicon-glass" aria-hidden="true"></span> Alcohol: {{ detailBeer.abv }}%</p>
+                    <h4 ng-show="detailBeer.available.description">Availability</h4>
+                    <p>{{ detailBeer.available.description }}</p>
+                    <h4 ng-show="currentBrewery">Brewery</h4>
+                    <p>{{ currentBrewery }}</p>
+                    <button type="button" class="btn btn-warning" ng-click="showOtherBeer(detailBeer.breweries[0].id)">Other beers from this brewery</button>
+                        </div>
+                    </div>
+            </div>
+
+            <div ng-show="othersByBrewery.length > 0">
+
+                <h2 class="sub-header">Other beers by {{ currentBrewery }}</h2>
+
+                <div class="row placeholders beerResults">
+                    <div class="col-xs-6 col-sm-3 col-md-3 placeholder" ng-repeat="otherBeer in othersByBrewery">
+                        <div class="searchItem" ng-click="showOtherBeerDetails($index)">
+                            <img ng-show="otherBeer.labels.icon" ng-src="{{ otherBeer.labels.icon}}" class="img-responsive" alt="Generic placeholder thumbnail">
+                            <img ng-show="!otherBeer.labels.icon" ng-src="http://placehold.it/64x64" class="img-responsive" alt="Generic placeholder thumbnail">
+                            <h4>{{ otherBeer.name }}</h4>
+                            <span class="text-muted">{{ otherBeer.description | limitTo: 50 }}</span>
+                            <span ng-if="otherBeer.description.length > 50">...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
